@@ -18,7 +18,7 @@ func main() {
 		fileserverHits: atomic.Int32{},
 	}
 	mux := http.NewServeMux()
-	mux.Handle("/app/", apiCfg.middewareMetricsIn(http.StripPrefix("/app/", http.FileServer(http.Dir(".")))))
+	mux.Handle("/app/", apiCfg.middewareMetricsInc(http.StripPrefix("/app/", http.FileServer(http.Dir(".")))))
 	mux.HandleFunc("/healthz", handlerReadiness)
 	mux.HandleFunc("/metrics", apiCfg.handlerMetrics)
 	mux.HandleFunc("/reset", apiCfg.handlerReset)
@@ -30,7 +30,7 @@ func main() {
 	log.Fatal(srv.ListenAndServe())
 }
 
-func (cfg *apiConfig) handleMetrics(w http.ResponseWriter, r *http.Request) {
+func (cfg *apiConfig) handlerMetrics(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-Type", "text/plain; charset=utf-8")
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte(fmt.Sprintf("Hits: %d", cfg.fileserverHits.Load())))
