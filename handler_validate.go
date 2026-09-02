@@ -20,7 +20,7 @@ func handlerValidateChirp(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	const maxChirpString = 140
-	if len(params.Body) > maxChirpString {
+	if len(param.Body) > maxChirpString {
 		respondWithError(w, http.StatusBadRequest, "Chirp is too long", nil)
 		return
 	}
