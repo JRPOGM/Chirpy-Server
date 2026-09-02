@@ -14,7 +14,7 @@ func handlerValidateChirp(w http.ResponseWriter, r *http.Request) {
 	}
 	decoder := json.NewDecoder(r.Body)
 	param := parameters{}
-	err := decoder.Decode(&params)
+	err := decoder.Decode(&param)
 	if err != nil {
 		respondWithError(w, http.StatusInternalServerError, "Couldn't decode parameters", err)
 		return
@@ -24,7 +24,7 @@ func handlerValidateChirp(w http.ResponseWriter, r *http.Request) {
 		respondWithError(w, http.StatusBadRequest, "Chirp is too long", nil)
 		return
 	}
-	respondWithJSON(w, http.StatusOK, returnValues{
+	respondWithJson(w, http.StatusOK, returnValues{
 		Valid: true,
 	})
 }

@@ -13,15 +13,15 @@ func handlerReadiness(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(http.StatusText(http.StatusOK)))
 }
 
-func respondWithError(w http.ResponseWriter, code int, msg string) {
-	type errorMessage struct {
-		Error stirng `json:"error"`
-	}
+func respondWithError(w http.ResponseWriter, code int, msg string, err error) {
 	if err != nil {
 		log.Println(err)
 	}
 	if code > 499 {
 		log.Printf("Responding with 5XX error: %s", msg)
+	}
+	type errorMessage struct {
+		Error stirng `json:"error"`
 	}
 	respondWithJson(w, code, errorMessage{
 		Error: msg,
