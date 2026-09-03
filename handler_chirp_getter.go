@@ -2,8 +2,15 @@ package main
 
 import (
 	"net/http"
-	"github.com/JRPOGM/Chirpy-Server/internal/database"
 )
+
+type Chirps struct {
+	ID        uuid.UUID `json:"id"`
+    CreatedAt time.Time `json:"created_at"`
+    UpdatedAt time.Time `json:"updated_at"`
+    Body	  string    `json:"body"`
+    UserID    uuid.UUID `json:"user_id"`
+}
 
 func (cfg *apiConfig) handlerGetChirps(w http.ResponseWriter, r *http.Request) {
 	dbChirp, err := cfg.db.GetChirps(r.Context())
