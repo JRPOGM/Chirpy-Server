@@ -42,11 +42,7 @@ func (cfg *apiConfig) handlerChirps(w http.ResponseWriter, r *http.Request) {
 		"sharbert": {},
 		"fornax": {},
 	}
-	clean, err := getCleanBody(param.Body, badWords)
-	if err != nil {
-		respondWithError(w, http.StatusBadRequest, "Could not clean the text", err)
-		return
-	}
+	clean := getCleanBody(param.Body, badWords)
 	chirp, err := cfg.db.CreateChirps(r.Context(), database.CreateChirpsParams{
 		Body: clean,
 		UserID: param.UserID,
