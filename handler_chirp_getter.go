@@ -2,6 +2,7 @@ package main
 
 import (
 	"net/http"
+	"github.com/JRPOGM/Chirpy-Server/internal/database"
 )
 
 func (cfg *apiConfig) handlerGetChirps(w http.ResponseWriter, r *http.Request) {
