@@ -15,6 +15,7 @@ import (
 type apiConfig struct {
 	fileserverHits	atomic.Int32
 	db 				*database.Queries
+	platform		string
 }
 
 func main() {
@@ -37,6 +38,7 @@ func main() {
 	mux.HandleFunc("GET /admin/metrics", apiCfg.handlerMetrics)
 	mux.HandleFunc("POST /admin/reset", apiCfg.handlerReset)
 	mux.HandleFunc("POST /api/validate_chirp", handlerValidateChirp)
+	mux.HandleFunc("POST /api/users", handlerUsers)
 	srv := &http.Server{
 		Addr:		":" + port,
 		Handler: mux,
