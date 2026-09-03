@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"sync/atomic"
 	"github.com/joho/godotenv"
-	"github.com/JRPOGM/Chirpy-Server"
+	"github.com/JRPOGM/Chirpy-Server/internal/database"
 	_ "github.com/lib/pq"
 )
 
