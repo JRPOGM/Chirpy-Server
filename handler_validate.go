@@ -51,7 +51,7 @@ func (cfg *apiConfig) handlerChirps(w http.ResponseWriter, r *http.Request) {
 		respondWithError(w, http.StatusInternalServerError, "couldn't create chirps", err)
 		return
 	}
-	respChirps := Chirps{
+	respChirps := Chirp{
 		ID:			chirp.ID,
 		CreatedAt:	chirp.CreatedAt,
 		UpdatedAt:	chirp.UpdatedAt,
