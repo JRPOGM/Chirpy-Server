@@ -4,11 +4,21 @@ import (
 	"encoding/json"
 	"net/http"
 	"strings"
+	"github.com/JRPOGM/Chirpy-Server/internal/database"
 )
 
-func handlerValidateChirp(w http.ResponseWriter, r *http.Request) {
+type Chirps struct {
+	ID        uuid.UUID `json:"id"`
+    CreatedAt time.Time `json:"created_at"`
+    UpdatedAt time.Time `json:"updated_at"`
+    Body   string    `json:"content"`
+    UserID    uuid.UUID `json:"user_id"`
+}
+
+func (cfg *apiConfig) handlerChirps(w http.ResponseWriter, r *http.Request) {
 	type parameters struct {
-		Body string `json:"body"`
+		Body 	string 		`json:"body"`
+		UserID 	uuid.UUID 	`json:"user_id"`
 	}
 	type returnValues struct {
 		CleanBody string `json:"cleaned_body"`
@@ -30,10 +40,27 @@ func handlerValidateChirp(w http.ResponseWriter, r *http.Request) {
 		"sharbert": {},
 		"fornax": {},
 	}
-	clean := getCleanBody(param.Body, badWords)
-	respondWithJson(w, http.StatusOK, returnValues{
-		CleanBody: clean,
+	clean, err := getCleanBody(param.Body, badWords)
+	if err != nil {
+		respondWithError(w, http.StatusBadRequest, "Could not clean the text", err)
+		return
+	}
+	chirp, err := cfg.db.CreateChirps(r.Context(), database.CreateChirpsParams{
+		Body: clean,
+		UserID: param.UserID,
 	})
+	if err != nil {
+		respondWithError(w, http.StatusInternalServerError, "couldn't create chirps", err)
+		return
+	}
+	respChirps := Chirps{
+		ID:			chirp.ID,
+		CreatedAt:	chirp.CreatedAt,
+		UpdatedAt:	chirp.UpdatedAt,
+		Body:		chirp.Body,
+		UserID:		chirp.UserID,
+	}
+	respondWithJson(w, http.StatusCreated, respChirps)
 }
 
 func getCleanBody(body string, badWords map[string]struct{}) string {
