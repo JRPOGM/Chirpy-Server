@@ -10,14 +10,14 @@ func (cfg *apiConfig) handlerGetChirps(w http.ResponseWriter, r *http.Request) {
 		respondWithError(w, http.StatusInternalServerError, "Couldn't find the chirps", err)
 		return
 	}
-	chirps := []Chirp{}
+	chirps := []Chirps{}
 	for _, chirp := range dbChirp {
-		chirps = append(chirps, Chirp{
-			ID: chirp.ID,
-			CreatedAt: chirp.CreatedAt,
-			UpdatedAt: chirp.UpdatedAt,
-			Body: chirp.Body,
-			UserID: chirp.UserID,
+		chirps = append(chirps, Chirps{
+			ID: 		chirp.ID,
+			CreatedAt: 	chirp.CreatedAt,
+			UpdatedAt: 	chirp.UpdatedAt,
+			Body: 		chirp.Body,
+			UserID: 	chirp.UserID,
 		})
 	}
 	respondWithJson(w, http.StatusOK, chirps)
