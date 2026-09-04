@@ -38,7 +38,7 @@ func (cfg *apiConfig) handlerUsers(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	dbUser, err := cfg.db.CreateUser(ctx, database.CreateUserParams{
-		Password: hashPass,
+		HashedPassword: hashPass,
 		Email: param.Email,
 	})
 	respUser := User{
