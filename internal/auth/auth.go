@@ -22,7 +22,7 @@ func CheckPasswordHash(password, hash string) (bool, error) {
 	return argon2id.ComparePasswordAndHash(password, hash)
 }
 
-func MakeJWT(userID uuid.UUID, tokenSecret string. expiresIn time.Duration) (string, error) {
+func MakeJWT(userID uuid.UUID, tokenSecret string, expiresIn time.Duration) (string, error) {
 	signingKey := []byte(tokenSecret)
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.RegisteredClaims{
 		Issuer:		string(TokenTypeAccess),
@@ -54,7 +54,7 @@ func ValidateJWT(tokenString, tokenSecret string) (uuid.UUID, error) {
 	if issuer != string(TokenTypeAccess) {
 		return uuid.Nil, errors.New("invalid issuer")
 	}
-	if, err := uuid.Parse(userIDString)
+	id, err := uuid.Parse(userIDString)
 	if err != nil {
 		return uuid.Nil, fmt.Errorf("invalid user ID: %w", err)
 	}
