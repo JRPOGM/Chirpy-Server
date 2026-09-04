@@ -32,7 +32,7 @@ func (cfg *apiConfig) handlerUsers(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-	hashPass, err := HashPassword(param.Password)
+	hashPass, err := auth.HashPassword(param.Password)
 	if err != nil {
 		respondWithError(w, http.StatusInternalServerError, "Couldn't hash the password", err)
 		return
