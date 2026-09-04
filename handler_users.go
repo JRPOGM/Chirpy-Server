@@ -18,6 +18,7 @@ type User struct {
 func (cfg *apiConfig) handlerUsers(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	type parameter struct {
+		Password string `json:"password"`
 		Email string `json:"email"`
 	}
 	decoder := json.NewDecoder(r.Body)
@@ -27,6 +28,10 @@ func (cfg *apiConfig) handlerUsers(w http.ResponseWriter, r *http.Request) {
 		log.Printf("Could not decode the user: %s", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
+	}
+	hashPass, err := HashPassword(param.Password)
+	if err != nil {
+		respondWithError(w, http.StatusInternalServerError, "Couldn't hash the password", err)
 	}
 	dbUser, err := cfg.db.CreateUser(ctx, param.Email)
 	respUser := User{
