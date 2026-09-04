@@ -33,7 +33,10 @@ func (cfg *apiConfig) handlerUsers(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		respondWithError(w, http.StatusInternalServerError, "Couldn't hash the password", err)
 	}
-	dbUser, err := cfg.db.CreateUser(ctx, param.Email)
+	dbUser, err := cfg.db.CreateUser(ctx, database.CreateUserParams{
+		Password: hashPass,
+		Email: param.Email,
+	})
 	respUser := User{
 		ID: dbUser.ID,
 		CreatedAt: dbUser.CreatedAt,
