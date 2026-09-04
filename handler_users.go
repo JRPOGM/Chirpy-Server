@@ -6,6 +6,7 @@ import (
 	"log"
 	"time"
 	"github.com/google/uuid"
+	"github.com/JRPOGM/Chirpy-Server/internal/auth"
 )
 
 type User struct {
